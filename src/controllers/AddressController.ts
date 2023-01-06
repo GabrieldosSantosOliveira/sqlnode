@@ -1,40 +1,54 @@
-import { Response } from 'express';
-import { Request } from 'express-serve-static-core';
+import { Response, Request } from 'express';
 
-import { IUserAtributes, User } from '../models/User';
 import {
-  Address,
-  IAddressAtributes
-} from './../models/Address';
+  schemaAddressBodyStore,
+  schemaAddressParamsStore
+} from '../validation/Address/store';
+import { Address } from './../models/Address';
+import { User } from './../models/User';
+
 export class AddressController {
   static async store(req: Request, res: Response) {
-    const { user_id } = req.params;
-    const { zipcode, street, number } = req.body;
-    const user = await User.findByPk(user_id);
-    if (!user) {
-      return res
-        .status(400)
-        .json({ error: 'User not found' });
+    try {
+      const { user_id } = schemaAddressParamsStore.parse(
+        req.params
+      );
+      const { zipcode, street, number } =
+        schemaAddressBodyStore.parse(req.body);
+      const user = await User.findByPk(user_id);
+      if (!user) {
+        return res
+          .status(400)
+          .json({ error: 'User not found' });
+      }
+      const address = await Address.create({
+        number,
+        street,
+        user_id: Number(user_id),
+        zipcode
+      });
+      return res.json(address);
+    } catch (error) {
+      res.status(400).json({ error: error });
     }
-    const address = await Address.create({
-      number,
-      street,
-      user_id,
-      zipcode
-    });
-    return res.json(address);
   }
   static async index(req: Request, res: Response) {
-    const { user_id } = req.params;
+    try {
+      const { user_id } = schemaAddressParamsStore.parse(
+        req.params
+      );
 
-    const user = await User.findByPk(user_id, {
-      include: { association: 'addresses' }
-    });
-    if (!user) {
-      return res
-        .status(400)
-        .json({ error: 'User not found' });
+      const user = await User.findByPk(user_id, {
+        include: { association: 'addresses' }
+      });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ error: 'User not found' });
+      }
+      return res.json(user.addresses);
+    } catch (error) {
+      res.status(400).json({ error: error });
     }
-    return res.json(user.addresses);
   }
 }
