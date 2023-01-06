@@ -5,12 +5,12 @@ import Sequelize, {
   Optional
 } from 'sequelize';
 
-import { IUserAtributes, User } from './User';
+import { User } from './User';
 export type IModels = Pick<Sequelize.Sequelize, 'models'>;
 
 export interface IAddressAtributes {
-  id: string;
-  user_id: ForeignKey<string>;
+  id: number;
+  user_id: ForeignKey<number>;
   zipcode: string;
   street: string;
   number: number;
@@ -25,7 +25,7 @@ class Address extends Model<
   IAddressAtributes,
   IAddressAtributesCreate
 > {
-  declare id: string;
+  declare id: number;
   declare user_id: ForeignKey<User['id']>;
   declare zipcode: string;
   declare street: string;
@@ -37,13 +37,13 @@ class Address extends Model<
     this.init(
       {
         id: {
-          type: Sequelize.UUID,
+          type: Sequelize.INTEGER,
           primaryKey: true,
           allowNull: false,
-          defaultValue: Sequelize.UUIDV4
+          autoIncrement: true
         },
         user_id: {
-          type: Sequelize.UUID,
+          type: Sequelize.INTEGER,
           allowNull: false,
           references: { model: 'users', key: 'id' },
           onUpdate: 'CASCADE',
