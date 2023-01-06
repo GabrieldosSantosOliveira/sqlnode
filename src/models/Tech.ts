@@ -1,15 +1,9 @@
-import Sequelize, {
-  ForeignKey,
-  Model,
-  NonAttribute,
-  Optional
-} from 'sequelize';
+import Sequelize, { Model, Optional } from 'sequelize';
 
-import { IUserAtributes, User } from './User';
 export type IModels = Pick<Sequelize.Sequelize, 'models'>;
 
 export interface ITechAtributes {
-  id: string;
+  id: number;
   name: string;
   created_at: Date;
   updated_at: Date;
@@ -22,7 +16,7 @@ class Tech extends Model<
   ITechAtributes,
   ITechAtributesCreate
 > {
-  declare id: string;
+  declare id: number;
   declare name: string;
   declare created_at: Date;
   declare updated_at: Date;
@@ -30,10 +24,10 @@ class Tech extends Model<
     this.init(
       {
         id: {
-          type: Sequelize.UUID,
+          type: Sequelize.INTEGER,
           primaryKey: true,
           allowNull: false,
-          defaultValue: Sequelize.UUIDV4
+          autoIncrement: true
         },
         name: {
           type: Sequelize.STRING,
