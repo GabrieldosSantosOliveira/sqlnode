@@ -18,7 +18,7 @@ import Sequelize, {
 import { Address, IModels } from './Address';
 import { Tech } from './Tech';
 export interface IUserAtributes {
-  id: string;
+  id: number;
   name: string;
   email: string;
   created_at: Date;
@@ -32,38 +32,38 @@ class User extends Model<
   IUserAtributes,
   IUserAtributesCreate
 > {
-  declare id: string;
+  declare id: number;
   declare name: string;
   declare email: string;
   declare created_at: Date;
   declare updated_at: Date;
   declare addresses?: NonAttribute<Address[]>;
   declare techs?: NonAttribute<Tech[]>;
+  declare addTech: HasManyAddAssociationMixin<Tech, number>;
 
-  declare getTeches: HasManyGetAssociationsMixin<Tech>; // Note the null assertions!
-  declare addTech: HasManyAddAssociationMixin<Tech, string>;
-  declare addTeches: HasManyAddAssociationsMixin<
+  declare getTechs: HasManyGetAssociationsMixin<Tech>; // Note the null assertions!
+  declare addTechs: HasManyAddAssociationsMixin<
     Tech,
-    string
+    number
   >;
-  declare setTeches: HasManySetAssociationsMixin<
+  declare setTechs: HasManySetAssociationsMixin<
     Tech,
-    string
+    number
   >;
   declare removeTech: HasManyRemoveAssociationMixin<
     Tech,
-    string
+    number
   >;
-  declare removeTeches: HasManyRemoveAssociationsMixin<
+  declare removeTechs: HasManyRemoveAssociationsMixin<
     Tech,
-    string
+    number
   >;
-  declare hasTech: HasManyHasAssociationMixin<Tech, string>;
-  declare hasTeches: HasManyHasAssociationsMixin<
+  declare hasTech: HasManyHasAssociationMixin<Tech, number>;
+  declare hasTechs: HasManyHasAssociationsMixin<
     Tech,
-    string
+    number
   >;
-  declare countTeches: HasManyCountAssociationsMixin;
+  declare countTechs: HasManyCountAssociationsMixin;
   declare createTech: HasManyCreateAssociationMixin<
     Tech,
     'name'
@@ -72,10 +72,10 @@ class User extends Model<
     this.init(
       {
         id: {
-          type: Sequelize.UUID,
+          type: Sequelize.INTEGER,
           primaryKey: true,
           allowNull: false,
-          defaultValue: Sequelize.UUIDV4
+          autoIncrement: true
         },
         name: {
           type: Sequelize.STRING,
