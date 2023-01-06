@@ -1,10 +1,11 @@
-import Sequelize from 'sequelize';
+import Sequelize, { Options } from 'sequelize';
 
+import * as dbConfig from '../config/database';
 import { Address } from '../models/Address';
 import { Tech } from '../models/Tech';
 import { User } from '../models/User';
-import * as dbConfig from './../config/database';
-const connection = new Sequelize.Sequelize(dbConfig as any);
+
+const connection = new Sequelize.Sequelize(dbConfig as Options);
 Tech.initModel(connection);
 User.initModel(connection);
 Address.initModel(connection);
