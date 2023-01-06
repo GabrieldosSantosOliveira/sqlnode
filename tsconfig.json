@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "sourceMap": true,
     "outDir": "dist",
     "strict": true,
-    "lib": ["esnext"],
     "target": "ES6",
     "esModuleInterop": true,
-    "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "allowJs": true
+    "allowJs": true,
+    "module": "CommonJS"
   }
 }
