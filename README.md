@@ -45,6 +45,34 @@ yarn
 # or
 npm install
 ```
+Crie o arquivo .env usando como exemplo o arquivo .env.example
+```
+DB_DIALECT=
+DB_HOST=
+DB_PORT=
+DB_PASSWORD=
+DB_DATABASE=
+DB_USERNAME=
+PORT=
+```
+#### Crie o database
+```
+yarn sequelize db:create
+# or
+npx sequelize db:create
+```
+#### Realize a migração das tabelas
+```
+yarn sequelize db:migrate
+# or
+npx sequelize db:migrate
+```
+#### Rode os seeders
+```
+yarn sequelize db:seed:all
+# or
+npx sequelize db:seed:all
+```
 #### Execute a aplicação 
 ```
 yarn dev
